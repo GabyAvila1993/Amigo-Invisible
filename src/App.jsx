@@ -16,12 +16,28 @@ function App() {
   const [participantes, setParticipantes] = useState([]);
   const [resultado, setResultado] = useState(null);
 
+
+
+  const esEmailValido = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+
   const agregarParticipantes = () => {
-    if (nombre.trim() && email.trim()) {
-      setParticipantes([...participantes, { nombre, email }]);
-      setNombre('');
-      setEmail('');
+    if (!nombre.trim() || !email.trim()) {
+      alert('Nombre y email son obligatorios');
+      return;
     }
+
+    if (!esEmailValido(email)) {
+      alert('Por favor, ingresá un email válido');
+      return;
+    }
+
+    setParticipantes([...participantes, { nombre, email }]);
+    setNombre('');
+    setEmail('');
   };
 
   const iniciarSorteo = async () => {
@@ -49,7 +65,7 @@ function App() {
   return (
     <div className="app-conteiner">
       <h1>Amigo Invisible</h1>
-      
+
       <div className="form-section">
         <div className="formulario">
           <input
@@ -63,14 +79,14 @@ function App() {
             onChange={e => setEmail(e.target.value)}
           />
         </div>
-        
+
         <div className="buttons-container">
           <button className="boton" onClick={agregarParticipantes}>Agregar</button>
           <button className="boton" onClick={iniciarSorteo}>Iniciar Sorteo</button>
           <button className="boton" onClick={reinicia}>Reiniciar</button>
         </div>
       </div>
-      
+
       <div className="lista">
         <h2>Participantes</h2>
         <table className="tabla">
